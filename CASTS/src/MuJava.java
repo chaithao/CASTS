@@ -100,6 +100,14 @@ class MuJava
 		String output = "MuJava_HOME=" + path + "\n Debug_mode=false\n";
 		
 		//TODO Write out to config file, also need to look at adjusting the CLASSPATH for mac and windows
+		try{
+			Writer w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("mujava.config"), "utf-8"));
+			w.write(output);
+			w.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
@@ -160,12 +168,14 @@ class MuJava
 	/**
 	 * Builds muJava Command for mac
 	 * @author Jonathan Coffman
+	 * @edited by Chai Thao
 	 *
 	 */
 	private void macMuCommand(String muPath, String jarPath) throws IOException 
 	{
 		String[] exec = new String[1];
 		//TODO Run command to run on mac. should launch the muJava gui on the selected project
+		exec = "java mujava.gui.GenMutantsMain"; //Command line for running muJava gui.
 		Execute.getExecute().exec(exec);
 	}
 
@@ -178,6 +188,13 @@ class MuJava
 	{
 		String[] exec = new String[4];
 		//TODO Run command to run on windows. should launch the muJava gui on the selected project
+		exec = "java mujava.gui.GenMutantsMain"; //Command line for running muJava gui. This assumes command line is executed in a directory that contains the mujava.config file.
 		Execute.getExecute().exec(exec);
 	}
+	
+	/*****example shell script*********
+	set CLASSPATH=%CLASSPATH%;.;C:\Program Files\Java|jdk1.7.0\lib\tools.jar;c:\mujava\openjava.jar;c:\mujava\mujava.jar;
+	cd c:\mujava
+	java mujava.gui.GenMutantsMain
+	*/
 }
